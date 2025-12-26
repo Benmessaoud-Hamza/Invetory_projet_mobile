@@ -1,0 +1,70 @@
+<!-- inventory-detail.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Détails du produit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  @if(inventory){
+
+  <ion-card class="inventory-detail-card">
+    <!-- ICON + NAME -->
+    <ion-card-header class="ion-text-center">
+      <ion-icon [name]="getIconCategory(inventory.category!)" size="large" class="category-icon"></ion-icon>
+      <ion-card-title class="inventory-name">
+        {{ inventory.name }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        @if(historyEvent){
+        <ion-row>
+          <ion-col size="6"><strong>Évenement:</strong></ion-col>
+          <ion-col size="6">{{ getEventName(historyEvent) }}</ion-col>
+        </ion-row>
+        }
+        <ion-row>
+          <ion-col size="6"><strong>Catégorie:</strong></ion-col>
+          <ion-col size="6">{{ getCategoryName(inventory.category!) }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6"><strong>Prix unitaire:</strong></ion-col>
+          <ion-col size="6">{{ inventory.price }} MAD</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6"><strong>Quantité:</strong></ion-col>
+          <ion-col size="6">{{ inventory.quantity }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6"><strong>Total (Prix × Quantité):</strong></ion-col>
+          <ion-col size="6">{{ inventory.quantity * inventory.price}} MAD</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6"><strong>Créé par:</strong></ion-col>
+          <ion-col size="6">{{ createdByName }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6"><strong>Date création:</strong></ion-col>
+          <ion-col size="6">{{ formatDate(inventory.createdAt!) }}</ion-col>
+        </ion-row>
+        @if(formatDate(inventory.createdAt!)!== formatDate(inventory.updatedAt!) ){
+        <ion-row>
+          <ion-col size="6"><strong>Modifié par:</strong></ion-col>
+          <ion-col size="6">{{ updatedByName }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6"><strong>Date modification:</strong></ion-col>
+          <ion-col size="6">{{ formatDate(inventory.updatedAt!) }}</ion-col>
+        </ion-row>
+        }
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button (click)="close()" expand="block" color="primary" class="ion-margin-top">
+    Retour à la liste
+  </ion-button>
+  }
+</ion-content>

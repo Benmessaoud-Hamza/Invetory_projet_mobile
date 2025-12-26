@@ -1,0 +1,78 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Liste d'inventaire </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-searchbar [debounce]="1000" [(ngModel)]="searchName" (ionInput)="search()"
+    placeholder="Chercher"></ion-searchbar>
+
+
+  <ion-item>
+    <ion-select [(ngModel)]="categorySearch" (ionChange)="search()" placeholder="Sélectionner une catégorie"
+      fill="outline" class="full-width">
+      @if(categorySearch){
+      <ion-icon [name]="getIconCategory(categorySearch)" slot="start">
+      </ion-icon> }
+      <ion-select-option value="all">
+        Pas de filtre
+      </ion-select-option>
+      @for(category of categories;track category){
+      <ion-select-option [value]="category.value">
+        {{ category.name }}
+      </ion-select-option>
+      }
+    </ion-select>
+  </ion-item>
+
+
+  @if(items.length){
+  <ion-list class="list">
+    @for(item of items; track item){
+    <ion-item-sliding>
+
+      <ion-item-options side="start">
+        <ion-item-option color="success" (click)="viewDetails(item)">
+          Details
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-card>
+        <ion-item (click)="viewDetails(item)">
+          <!-- Avatar avec icône selon la catégorie -->
+          <ion-avatar slot="start">
+            <ion-icon [name]="getIconCategory(item.category!)" size="large"></ion-icon>
+          </ion-avatar>
+
+          <ion-label>
+            <h2>{{item.name}}</h2>
+            <p>Quantité: {{item.quantity}}</p>
+          </ion-label>
+        </ion-item>
+        @if(hasRight){
+        <ion-item-options side="end">
+          <ion-item-option (click)="addOrupdateInventory(item)">Mettre à jour</ion-item-option>
+          @if(canDelete){
+          <ion-item-option color="danger" (click)="deleteInventory(item)">Supprimer</ion-item-option>
+          }
+        </ion-item-options>
+        }
+      </ion-card>
+
+    </ion-item-sliding>
+    }
+  </ion-list>
+  }@else {
+  <ion-item>Aucune liste d'inventaire disponible</ion-item>
+  }
+
+  @if(hasRight){
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addOrupdateInventory()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
+
+</ion-content>

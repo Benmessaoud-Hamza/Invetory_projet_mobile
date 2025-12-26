@@ -1,0 +1,20 @@
+.red {
+  color: red;
+}
+
+ion-item ion-label {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+ion-item ion-input {
+  height: 40px;
+}
+
+ion-select::part(icon) {
+  display: none;
+}
+
+.appliedBtn {
+  margin-top: 2rem;
+}

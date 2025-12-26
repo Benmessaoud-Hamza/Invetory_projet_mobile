@@ -1,0 +1,64 @@
+@let user = authService.appUser$ | async;
+<ion-header>
+  <ion-toolbar>
+    <ion-title> {{canManageUsers ? 'Compte & Gestion':'Mon Compte'}}</ion-title>
+
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+
+  @if(user){
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="userName">{{ user.firstName }} {{ user.lastName }} </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-icon class="center" slot="start" [name]="getRoleIcon(user.role)" size="large"></ion-icon>
+      <div class="role">
+        {{ getRoleLabel( user.role ) }} </div>
+      <div class="email">
+        {{ user.email }} </div>
+
+      <ion-button fill="outline" class="center logout" expand="block" color="danger" (click)="logout()"
+        aria-label="Déconnexion">
+        Déconnexion
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  @if(canManageUsers){
+  <!-- Segments -->
+  <ion-segment [(ngModel)]="segment">
+    <ion-segment-button value="active">
+      Employés
+    </ion-segment-button>
+    <ion-segment-button value="blocked">
+      Employés Bloqués
+    </ion-segment-button>
+  </ion-segment>
+
+  <div>
+    <app-user-list-component [status]="segment"></app-user-list-component>
+  </div>
+
+  <!-- FAB pour créer un utilisateur -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openCreateModal()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Modal de création -->
+  <ion-modal [isOpen]="modalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <app-user-form-component (userCreated)="onUserCreated($event)"></app-user-form-component>
+    </ng-template>
+  </ion-modal>
+  }
+  }@else {
+  <app-login-form-component></app-login-form-component>
+  }
+</ion-content>

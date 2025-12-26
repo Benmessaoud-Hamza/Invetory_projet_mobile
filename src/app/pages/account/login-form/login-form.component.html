@@ -1,0 +1,40 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Login</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+
+    <ion-item>
+      <ion-input [(ngModel)]="email" labelPlacement="stacked" label="Email" placeholder="email@domain.com" />
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input [(ngModel)]="password" type="password"></ion-input>
+    </ion-item> -->
+
+    <ion-item>
+      <ion-input [type]="showPassword?'text':'password'" [(ngModel)]="password" labelPlacement="stacked"
+        label="Mot de passe" placeholder="mot de passe">
+
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="showPassword=!showPassword">
+          @if(showPassword){
+          <ion-icon slot="icon-only" name="eye-off" aria-hidden="true"></ion-icon>
+          }@else{
+          <ion-icon slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+          }
+        </ion-button>
+      </ion-input>
+    </ion-item>
+
+    <div class="loginBtn">
+      <ion-button expand="block" (click)="login()" [disabled]="authService.isLoading || !password || !email">
+        @if(authService.isLoading){
+        <ion-spinner name="crescent"></ion-spinner>
+        }@else{
+        Se connecter
+        }
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

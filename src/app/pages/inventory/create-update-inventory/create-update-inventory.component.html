@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ inventory.id != null ? "Mettre à jour le produit" : "Ajouter un produit" }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <form [formGroup]="formGroup">
+    <ion-card>
+      <ion-card-content>
+
+        <!-- NOM -->
+        <ion-item>
+          <ion-label position="stacked">
+            Nom <span class="red">*</span>
+          </ion-label>
+          <ion-input formControlName="name" placeholder="Entrez le nom" fill="outline">
+          </ion-input>
+        </ion-item>
+
+        <!-- CATEGORIE -->
+        <ion-item>
+          <ion-label position="stacked">Catégorie</ion-label>
+          <ion-select formControlName="category" placeholder="Sélectionner une catégorie" fill="outline"
+            class="full-width">
+            @if(formGroup.get('category')?.value){
+            <ion-icon [name]="getIconCategory(formGroup.get('category')?.value)" slot="start">
+            </ion-icon> }
+            @for(category of categories;track category){
+            <ion-select-option [value]="category.value">
+              {{ category.name }}
+            </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <!-- PRIX -->
+        <ion-item>
+          <ion-label position="stacked">
+            Prix unitaire <span class="red">*</span>
+          </ion-label>
+
+          <ion-input formControlName="price" type="number" min="0" placeholder="Entrez le prix" fill="outline">
+          </ion-input>
+
+          <!-- Suffixe MAD -->
+          <ion-text slot="end" color="medium">
+            MAD
+          </ion-text>
+        </ion-item>
+
+        <!-- QUANTITE -->
+        <ion-item>
+          <ion-label position="stacked">
+            Quantité <span class="red">*</span>
+          </ion-label>
+          <ion-input formControlName="quantity" type="number" min="0" placeholder="Entrez la quantité" fill="outline">
+          </ion-input>
+        </ion-item>
+
+        <!-- BOUTON VALIDER -->
+
+
+        <ion-button class="appliedBtn" expand="block" (click)="valider()" [disabled]="! formGroup.valid">
+          Appliquer
+        </ion-button>
+
+        <ion-button class="appliedBtn" expand="block" (click)="exit()" color="danger">
+          Annuler
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </form>
+
+</ion-content>

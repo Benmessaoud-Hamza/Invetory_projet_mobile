@@ -1,0 +1,20 @@
+.list {
+  border-radius: 1rem;
+  margin-top: 2rem;
+  border: 1px solid gray;
+  height: 65vh;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+ion-item ion-input {
+  height: 40px;
+}
+
+ion-select::part(icon) {
+  display: none;
+}
+
+.appliedBtn {
+  margin-top: 2rem;
+}

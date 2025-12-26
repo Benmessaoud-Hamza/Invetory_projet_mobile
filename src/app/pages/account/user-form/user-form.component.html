@@ -1,0 +1,58 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Créer un utilisateur</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Email <span class="red">*</span></ion-label>
+      <ion-input [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Prénom <span class="red">*</span></ion-label>
+      <ion-input [(ngModel)]="firstName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Nom <span class="red">*</span></ion-label>
+      <ion-input [(ngModel)]="lastName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Mot de passe <span class="red">*</span></ion-label>
+      <ion-input [type]="showPassword?'text':'password'" [(ngModel)]="password" labelPlacement="stacked"
+        placeholder="mot de passe">
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="showPassword=!showPassword">
+          @if(showPassword){
+          <ion-icon slot="icon-only" name="eye-off" aria-hidden="true"></ion-icon>
+          }@else{
+          <ion-icon slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+          }
+        </ion-button>
+      </ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label position="stacked">Role <span class="red">*</span></ion-label>
+      <ion-select [(ngModel)]="role" placeholder="Role" fill="outline" class="full-width">
+        @if(role){
+        <ion-icon [name]="getIconRole(role)" slot="start">
+        </ion-icon> }
+        @for(role of roles;track role){
+        <ion-select-option [value]="role.value">
+          {{ role.name }}
+        </ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+
+
+
+    <ion-button expand="block" class="appliedBtn" (click)="createUser()"
+      [disabled]="!email || !password || !firstName || !lastName">Créer</ion-button>
+    <ion-button class="appliedBtn" expand="block" (click)="close()" color="danger">
+      Annuler
+    </ion-button>
+
+  </ion-card-content>
+</ion-card>

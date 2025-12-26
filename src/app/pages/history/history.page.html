@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historique des Inventaires</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  <ion-searchbar [debounce]="1000" [(ngModel)]="searchName" (ionInput)="search()"
+    placeholder="Chercher"></ion-searchbar>
+  <ion-item>
+    <ion-select [(ngModel)]="categorySearch" (ionChange)="search()" placeholder="Sélectionner une catégorie"
+      fill="outline" class="full-width">
+      @if(categorySearch){
+      <ion-icon [name]="getIconCategory(categorySearch)" slot="start">
+      </ion-icon> }
+      <ion-select-option value="all">
+        Pas de filtre
+      </ion-select-option>
+      @for(category of categories;track category){
+      <ion-select-option [value]="category.value">
+        {{ category.name }}
+      </ion-select-option>
+      }
+    </ion-select>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>Date début</ion-label>
+    <ion-datetime-button datetime="datetimeStart"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetimeStart" [(ngModel)]="dateStart" presentation="date" [showDefaultButtons]="true"
+          (ionChange)="search()" [max]="dateEnd">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Date fin</ion-label>
+    <ion-datetime-button datetime="datetimeEnd"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetimeEnd" [(ngModel)]="dateEnd" presentation="date" [showDefaultButtons]="true"
+          (ionChange)="search()" [min]="dateStart">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+
+  @if(items.length){
+  <ion-list class="list">
+    @for(item of items;track item){
+
+    <ion-item button (click)="openDetail(item)">
+      <ion-label>
+        <h2>{{ item.inventory.name }}</h2>
+        <p>Événement : {{ getEventName(item.eventType) }}</p>
+        <p>Date : {{ formatDate(item.dateEvent) }}</p>
+        <p>{{ item.user?.firstName }} {{item.user?.lastName }}</p>
+      </ion-label>
+    </ion-item>
+
+    }
+  </ion-list>
+  }@else {
+  <ion-item>Aucun historique disponible</ion-item>
+  }
+
+
+</ion-content>

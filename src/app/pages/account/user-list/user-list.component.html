@@ -1,0 +1,31 @@
+<ion-card>
+  <ion-card-content>
+    @let currentUser = (authService.appUser$ | async);
+    @let users= users$ | async;
+    @if(users?.length){
+    <ion-list class="list-scroll">
+      @for(user of users;track user){
+      @if(currentUser?.uid !== user.uid){
+      <ion-card>
+        <ion-item>
+          <ion-icon slot="start" [name]="getRoleIcon(user.role)" size="large"></ion-icon>
+          <ion-label>
+            <h2>{{ user.firstName }} {{ user.lastName }} </h2>
+            <p>{{ user.email }}</p>
+            <p>{{ user.role }}
+            </p>
+          </ion-label>
+          <ion-toggle [disabled]="currentUser?.uid === user.uid || !canDisableUser(user.role)"
+            aria-label="Success toggle" color="success" [checked]="user.status === 'active'" slot="end"
+            (ionChange)="onStatusToggle(user, $event)"></ion-toggle>
+        </ion-item>
+      </ion-card>
+      }
+      }
+
+    </ion-list>
+    }@else {
+    Aucun Utilisateur Trouvé
+    }
+  </ion-card-content>
+</ion-card>
