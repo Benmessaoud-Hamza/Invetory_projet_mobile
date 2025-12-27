@@ -1,29 +1,22 @@
-import { Subscription } from "rxjs";
-import { Component, OnDestroy } from "@angular/core";
-import { IonicModule } from "@ionic/angular";
-import { AuthService } from "@services";
-import { AsyncPipe, CommonModule } from "@angular/common";
-import { LoginFormComponent } from "./login-form/login-form.component";
-import { UserFormComponent } from "./user-form/user-form.component";
-import { UserListComponent } from "./user-list/user-list.component";
-import { FormsModule } from "@angular/forms";
-import { UserStatus } from "@enums";
-import { UserRole } from "@enums";
-
-import {
-  getIconByRole,
-  getRoleName,
-  roleBigOrEqualThan,
-  roleBigThan,
-} from "@utils";
+import { Subscription } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { AuthService } from '@services';
+import { AsyncPipe } from '@angular/common';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { UserFormComponent } from './user-form/user-form.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { FormsModule } from '@angular/forms';
+import { UserStatus } from '@enums';
+import { UserRole } from '@enums';
+import { getIconByRole, getRoleName, roleBigOrEqualThan } from '@utils';
+import { AccountModule } from './acount.module';
 
 @Component({
-  selector: "app-account",
-  templateUrl: "account.page.html",
-  styleUrls: ["account.page.scss"],
+  selector: 'app-account',
+  templateUrl: 'account.page.html',
+  styleUrls: ['account.page.scss'],
   imports: [
-    IonicModule,
-    CommonModule,
+    AccountModule,
     LoginFormComponent,
     UserFormComponent,
     UserListComponent,
@@ -47,7 +40,7 @@ export class AccountPage implements OnDestroy {
   }
 
   onUserCreated(user: any) {
-    console.log("New user created:", user);
+    console.log('New user created:', user);
     this.modalOpen = false;
   }
 

@@ -28,15 +28,16 @@ import {
   shieldCheckmarkOutline,
   shirt,
   trash,
-} from "ionicons/icons";
-import { addIcons } from "ionicons";
-import { Component } from "@angular/core";
-import { IonApp, IonRouterOutlet } from "@ionic/angular/standalone";
+} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
+import { Component } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "app.component.html",
-  imports: [IonApp, IonRouterOutlet],
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  imports: [IonApp, RouterModule, IonRouterOutlet],
 })
 export class AppComponent {
   constructor() {

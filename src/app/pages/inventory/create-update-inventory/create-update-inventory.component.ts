@@ -1,5 +1,4 @@
-import { ToastService } from '@services';
-import { ModalController, IonicModule } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Component, OnInit, Input } from '@angular/core';
 import {
   FormBuilder,
@@ -9,14 +8,15 @@ import {
 } from '@angular/forms';
 import { InventoryDtoWrite } from '@models';
 import { CategoryInventoryEnum } from '@enums';
-import { CommonModule } from '@angular/common';
 import { getCategories, getCategoryIcon, normalizeText } from '@utils';
+import { InventoryModule } from '../inventory.module';
 
 @Component({
   selector: 'app-create-update-inventory',
   templateUrl: './create-update-inventory.component.html',
   styleUrls: ['./create-update-inventory.component.scss'],
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [InventoryModule, ReactiveFormsModule],
+  providers: [ModalController],
 })
 export class CreateOrUpdateInventoryPage implements OnInit {
   formGroup!: FormGroup;

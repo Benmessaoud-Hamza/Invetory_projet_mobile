@@ -1,7 +1,7 @@
 import { UserRole, UserStatus } from '@enums';
 
 export interface AppUser {
-  uid: string;
+  uid?: string;
   email: string;
 
   firstName?: string;
@@ -10,4 +10,6 @@ export interface AppUser {
 
   role: UserRole;
   status: UserStatus;
+
+  createdAt?: Date;
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CategoryInventoryEnum, InventoryEventEnum } from '@enums';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { InventoryHistory, InventoryHistorySearch } from '@models';
 import { InventoryHistoryService } from '@services';
 import {
@@ -12,12 +12,14 @@ import {
 } from '@utils';
 import { Timestamp } from 'firebase/firestore';
 import { InventoryDetailComponent } from 'src/app/shared/components';
+import { HistoryModule } from './history.module';
 
 @Component({
   selector: 'app-history',
   templateUrl: 'history.page.html',
   styleUrls: ['history.page.scss'],
-  imports: [IonicModule, FormsModule],
+  imports: [HistoryModule, FormsModule],
+  providers: [ModalController],
 })
 export class HistoryPage {
   public items: InventoryHistory[] = [];

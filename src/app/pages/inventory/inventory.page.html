@@ -26,8 +26,9 @@
     </ion-select>
   </ion-item>
 
+  @let items= items$ | async;
 
-  @if(items.length){
+  @if(items?.length){
   <ion-list class="list">
     @for(item of items; track item){
     <ion-item-sliding>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      {{ inventory.id != null ? "Mettre à jour le produit" : "Ajouter un produit" }}
+      {{ inventory.id != null ? "Mettre à jour le article" : "Ajouter un article" }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -44,12 +44,12 @@
           </ion-label>
 
           <ion-input formControlName="price" type="number" min="0" placeholder="Entrez le prix" fill="outline">
+            <ion-text slot="end" color="medium">
+              MAD
+            </ion-text>
           </ion-input>
 
-          <!-- Suffixe MAD -->
-          <ion-text slot="end" color="medium">
-            MAD
-          </ion-text>
+
         </ion-item>
 
         <!-- QUANTITE -->

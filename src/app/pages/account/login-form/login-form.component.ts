@@ -1,17 +1,15 @@
-import { IonicModule } from '@ionic/angular';
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { AuthService } from '@services';
 import { Subscription } from 'rxjs';
 import { ToastService } from '@services';
-import { Router } from '@angular/router';
+import { AccountModule } from '../acount.module';
 
 @Component({
   selector: 'app-login-form-component',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
-  imports: [IonicModule, FormsModule, CommonModule],
+  imports: [AccountModule, FormsModule],
 })
 export class LoginFormComponent implements OnDestroy {
   showPassword = false;
@@ -20,23 +18,26 @@ export class LoginFormComponent implements OnDestroy {
   subscriptions = new Subscription();
   constructor(
     public authService: AuthService,
-    private toastService: ToastService,
-    private router: Router
+    private toastService: ToastService
   ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  login() {
+  async login() {
     console.log('email', this.email);
     console.log('password', this.password);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      await this.toastService.showError('Format de l’email invalide');
+      return;
+    }
+
     this.subscriptions.add(
       this.authService.login(this.email, this.password).subscribe({
-        next: async () => {
-          await this.toastService.showSuccess('Authentifié avec Success');
-        },
-        error: (err) => {
+        error: async (err) => {
           console.log('error');
           // Firebase error code
           let message = 'Une erreur est survenue';
@@ -62,7 +63,7 @@ export class LoginFormComponent implements OnDestroy {
             }
           }
 
-          this.toastService.showError(message);
+          await this.toastService.showError(message);
         },
       })
     );

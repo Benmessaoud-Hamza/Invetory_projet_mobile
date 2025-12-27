@@ -1,0 +1,62 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import {
+  IonHeader,
+  IonToolbar,
+  IonContent,
+  IonTitle,
+  IonItem,
+  IonList,
+  IonSelect,
+  IonSelectOption,
+  IonIcon,
+  IonLabel,
+  IonText,
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonSearchbar,
+  IonItemSliding,
+  IonItemOptions,
+  IonFab,
+  IonItemOption,
+  IonFabButton,
+  IonAvatar,
+  IonInput,
+} from '@ionic/angular/standalone';
+
+const modules = [
+  CommonModule,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonItem,
+  IonList,
+  IonSelect,
+  IonSelectOption,
+  IonIcon,
+  IonLabel,
+  IonText,
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonSearchbar,
+  IonItemSliding,
+  IonItemOptions,
+  IonFab,
+  IonFabButton,
+  IonItemOption,
+  IonAvatar,
+  IonInput,
+];
+
+@NgModule({
+  imports: modules,
+  exports: modules,
+})
+export class InventoryModule {}

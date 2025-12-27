@@ -1,18 +1,17 @@
-import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { AuthService } from '@services';
-import { UserRole } from '@enums';
+import { UserRole, UserStatus } from '@enums';
 import { Subscription } from 'rxjs';
 import { ToastService } from '@services';
-import { getIconByRole, getRoleName } from '@utils';
+import { getIconByRole, getRoleName, roleBigOrEqualThan } from '@utils';
+import { AccountModule } from '../acount.module';
 
 @Component({
   selector: 'app-user-form-component',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
-  imports: [IonicModule, FormsModule, CommonModule],
+  imports: [AccountModule, FormsModule],
 })
 export class UserFormComponent implements OnDestroy {
   email = '';
@@ -34,7 +33,7 @@ export class UserFormComponent implements OnDestroy {
   }));
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private toastService: ToastService
   ) {}
   ngOnDestroy(): void {
@@ -64,17 +63,16 @@ export class UserFormComponent implements OnDestroy {
       this.subscriptions.add(
         this.authService
           .register(
-            this.email,
-            this.password,
-            this.role,
-            this.firstName,
-            this.lastName
+            {
+              email: this.email,
+              role: this.role,
+              firstName: this.firstName,
+              lastName: this.lastName,
+              status: UserStatus.ACTIVE,
+            },
+            this.password
           )
           .subscribe(async () => {
-            await this.toastService.showSuccess(
-              `Utilisateur créé avec succes!`
-            );
-
             this.email = '';
             this.password = '';
             this.firstName = '';
@@ -94,5 +92,9 @@ export class UserFormComponent implements OnDestroy {
 
   close() {
     this.userCreated.emit(false);
+  }
+
+  isRoleAvailable(role: UserRole) {
+    return roleBigOrEqualThan(this.authService.currentAppUser?.role!, role);
   }
 }

@@ -10,12 +10,14 @@ import {
   where,
   updateDoc,
   orderBy,
+  collectionData,
 } from '@angular/fire/firestore';
 import { InventoryEventEnum } from '@enums';
 import { Inventory, InventorySearch } from '@models';
 import { AuthService } from '@services';
 import { normalizeText } from '@utils';
-import { deleteDoc } from 'firebase/firestore';
+import { deleteDoc, onSnapshot, QueryConstraint } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {
@@ -31,47 +33,38 @@ export class InventoryService {
     return collection(this.firestore, this.collectionName);
   }
 
-  async getInventories(filters?: InventorySearch): Promise<Inventory[]> {
-    console.log('getInventories', filters);
+  getInventories$(filters?: InventorySearch): Observable<Inventory[]> {
+    const conditions: QueryConstraint[] = [];
 
-    const conditions: any[] = [];
     if (filters) {
-      // Filter by name (case-insensitive, accent-insensitive prefix search)
+      // 🔍 Filtre par nom
       if (filters.name != null && filters.name !== '') {
         const searchText = normalizeText(filters.name);
         conditions.push(
           where('normalizedName', '>=', searchText),
-          where('normalizedName', '<=', searchText + '\uf8ff')
+          where('normalizedName', '<=', searchText + '\uf8ff'),
+          orderBy('normalizedName')
         );
       }
 
-      // Filter by category
+      // 📂 Filtre par catégorie
       if (filters.category != null) {
         conditions.push(where('category', '==', filters.category));
       }
 
-      // If no name filter, sort by updatedAt descending
-      if (!filters.name != null) {
+      // 📅 Tri
+      if (!filters.name) {
         conditions.push(orderBy('updatedAt', 'desc'));
       } else {
         conditions.push(orderBy('name', 'asc'));
       }
+    } else {
+      conditions.push(orderBy('updatedAt', 'desc'));
     }
 
-    // Build the final query
-    const q = conditions.length
-      ? query(this.getCollectionRef(), ...conditions)
-      : query(this.getCollectionRef(), orderBy('updatedAt', 'desc'));
+    const q = query(this.getCollectionRef(), ...conditions);
 
-    const snapshot = await getDocs(q);
-
-    return snapshot.docs.map(
-      (doc) =>
-        ({
-          id: doc.id,
-          ...doc.data(),
-        } as Inventory)
-    );
+    return collectionData(q, { idField: 'uid' }) as Observable<Inventory[]>;
   }
 
   async insertInventory(inventory: Inventory) {

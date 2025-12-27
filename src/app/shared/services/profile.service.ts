@@ -1,14 +1,42 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collectionData,
+  doc,
+  getDoc,
+} from '@angular/fire/firestore';
 import { AppUser } from '@models';
 import { UserRole, UserStatus } from '@enums';
-import { setDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  orderBy,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   private collectionName = 'profiles';
 
   constructor(private firestore: Firestore) {}
+
+  private getCollectionRef() {
+    return collection(this.firestore, this.collectionName);
+  }
+
+  getProfilesByStatus(status: UserStatus): Observable<AppUser[]> {
+    // 🔹 filtrage par status
+    const q = query(
+      this.getCollectionRef(),
+      where('status', '==', status)
+      // orderBy('createdAt', 'desc')
+    );
+
+    return collectionData(q, { idField: 'uid' }) as Observable<AppUser[]>;
+  }
 
   public async getProfileByIdUser(idUser: string): Promise<AppUser | null> {
     const userDoc = await getDoc(

@@ -43,13 +43,7 @@ export class AuthService {
   // -------------------------
   // Auth
   // -------------------------
-  register(
-    email: string,
-    password: string,
-    role: UserRole = UserRole.USER,
-    firstName?: string,
-    lastName?: string
-  ) {
+  register({ email, role, firstName, lastName }: AppUser, password: string) {
     const secondaryApp = initializeApp(
       environment.firebaseConfig,
       'secondaryApp'
@@ -68,12 +62,16 @@ export class AuthService {
             lastName,
             fullName:
               firstName && lastName ? `${firstName} ${lastName}` : undefined,
+            createdAt: new Date(),
           };
-          console.log('cred', cred);
           await this.profileService.addProfileUser(cred.user.uid, userData);
+          await this.toastService.showSuccess(`Utilisateur créé avec succes!`);
         })
-        .catch(() => {
+        .catch(async () => {
           this.isLoading = false;
+          await this.toastService.showError(
+            `Problème de création de profile !`
+          );
         })
     );
   }
@@ -98,9 +96,10 @@ export class AuthService {
           }
 
           this.appUserSubject.next(userData);
+          await this.toastService.showSuccess('Authentifié avec Success');
           return userCred.user;
         })
-        .catch(() => {
+        .finally(() => {
           this.isLoading = false;
         })
     );

@@ -39,9 +39,11 @@
         <ion-icon [name]="getIconRole(role)" slot="start">
         </ion-icon> }
         @for(role of roles;track role){
+        @if(isRoleAvailable(role.value)){
         <ion-select-option [value]="role.value">
           {{ role.name }}
         </ion-select-option>
+        }
         }
       </ion-select>
     </ion-item>
@@ -49,7 +51,7 @@
 
 
     <ion-button expand="block" class="appliedBtn" (click)="createUser()"
-      [disabled]="!email || !password || !firstName || !lastName">Créer</ion-button>
+      [disabled]="!email || !password || !firstName || !lastName || authService.isLoading">Créer</ion-button>
     <ion-button class="appliedBtn" expand="block" (click)="close()" color="danger">
       Annuler
     </ion-button>

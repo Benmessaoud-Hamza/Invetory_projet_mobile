@@ -2,7 +2,7 @@
   <ion-card-content>
     @let currentUser = (authService.appUser$ | async);
     @let users= users$ | async;
-    @if(users?.length){
+    @if((users?.length ?? 0 )> 1){
     <ion-list class="list-scroll">
       @for(user of users;track user){
       @if(currentUser?.uid !== user.uid){
@@ -12,8 +12,8 @@
           <ion-label>
             <h2>{{ user.firstName }} {{ user.lastName }} </h2>
             <p>{{ user.email }}</p>
-            <p>{{ user.role }}
-            </p>
+            <p>{{ user.role }}</p>
+            <p> Créé le : {{formatDate(user.createdAt!)}} </p>
           </ion-label>
           <ion-toggle [disabled]="currentUser?.uid === user.uid || !canDisableUser(user.role)"
             aria-label="Success toggle" color="success" [checked]="user.status === 'active'" slot="end"

@@ -28,7 +28,8 @@
     </ion-item>
 
     <div class="loginBtn">
-      <ion-button expand="block" (click)="login()" [disabled]="authService.isLoading || !password || !email">
+      <ion-button expand="block" (click)="login()"
+        [disabled]="authService.isLoading || !password || password.length < 6|| !email">
         @if(authService.isLoading){
         <ion-spinner name="crescent"></ion-spinner>
         }@else{

@@ -2,13 +2,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-title> {{canManageUsers ? 'Compte & Gestion':'Mon Compte'}}</ion-title>
-
-
-
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="ion-padding">
+<ion-content class="ion-padding">
+
+  <ion-modal [isOpen]="modalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <app-user-form-component (userCreated)="onUserCreated($event)"></app-user-form-component>
+    </ng-template>
+  </ion-modal>
 
   @if(user){
   <ion-card>
@@ -52,11 +55,7 @@
   </ion-fab>
 
   <!-- Modal de création -->
-  <ion-modal [isOpen]="modalOpen" (didDismiss)="closeModal()">
-    <ng-template>
-      <app-user-form-component (userCreated)="onUserCreated($event)"></app-user-form-component>
-    </ng-template>
-  </ion-modal>
+
   }
   }@else {
   <app-login-form-component></app-login-form-component>
